@@ -30,7 +30,7 @@ public class JwtUtils {
     @Value("${jwt.access-token-expiration}")
     private long accessTokenExpirationMs;
 
-    @Value("{jwt.refresh-token-expiration}")
+    @Value("${jwt.refresh-token-expiration}")
     private long refreshTokenExpirationMs;
 
     public String generateAccessToken(UserDetailsImpl userDetails){
@@ -51,6 +51,7 @@ public class JwtUtils {
     }
 
     public String generateRefreshToken(UserDetailsImpl userDetails){
+
         return Jwts.builder()
                 .subject(userDetails.getEmail())
                 .claim("id", userDetails.getId())

@@ -16,8 +16,8 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
     public boolean isValid(Object obj, ConstraintValidatorContext constraintValidatorContext) {
         if(obj instanceof RegisterRequest){
             RegisterRequest request = (RegisterRequest) obj;
-            return request.getPassword() != null &&
-                    request.getPassword().equals(request.getConfirmPassword());
+            return request.password() != null &&
+                    request.password().equals(request.confirmPassword());
         }
         return true;
     }

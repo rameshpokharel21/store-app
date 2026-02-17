@@ -1,4 +1,3 @@
-
 server:
   port: 8081
 
@@ -24,7 +23,7 @@ cors:
 
 jwt:
   secret: oXfoTNh5L3vrONyHrSFaL+WGWB/8S908Qf1TpakPvkA=
-  access-token-expiration: 900000 # 15 minutes
+  access-token-expiration: 900000 #15 minutes
   refresh-token-expiration: 604800000 # 7 days
   access-cookie-name: my_access_token_cookie
   refresh-cookie-name: my_refresh_token_cookie
@@ -32,4 +31,3 @@ jwt:
 logging:
   level:
     org.springframework.security: DEBUG
-

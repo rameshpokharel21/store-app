@@ -3,6 +3,7 @@ package com.ramesh.backend.security.service;
 import com.ramesh.backend.dto.request.LoginRequest;
 import com.ramesh.backend.dto.request.RegisterRequest;
 import com.ramesh.backend.dto.response.LoginResponse;
+import com.ramesh.backend.dto.response.UserResponse;
 import com.ramesh.backend.entity.Role;
 import com.ramesh.backend.entity.User;
 import com.ramesh.backend.exception.UnauthorizedException;
@@ -94,7 +95,7 @@ public class AuthService {
     }
 
 
-    public User register(RegisterRequest request){
+    public UserResponse register(RegisterRequest request){
         if(userRepository.existsByEmail(request.email())){
             throw new IllegalArgumentException("Email is already in use.");
         }
@@ -108,7 +109,17 @@ public class AuthService {
         Set<Role> roles = new HashSet<>();
         roles.add(Role.STAFF);
         user.setRoles(roles);
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        Set<String> roleNames = savedUser.getRoles().stream()
+                .map(Enum::name)
+                .collect(Collectors.toSet());
+        return new UserResponse(
+                savedUser.getId(),
+                savedUser.getName(),
+                savedUser.getEmail(),
+                roleNames,
+                savedUser.getCreatedAt().toString()
+        );
     }
 
     public void refreshAccessToken(HttpServletRequest request, HttpServletResponse response){

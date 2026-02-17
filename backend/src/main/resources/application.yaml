@@ -19,17 +19,17 @@ spring:
         hibernate:
           format_sql: true
 
-  cors:
-    allowed-origins: http://localhost:5173,http://localhost:3000
+cors:
+  allowed-origins: http://localhost:5173,http://localhost:3000
 
-  jwt:
-    secret: oXfoTNh5L3vrONyHrSFaL+WGWB/8S908Qf1TpakPvkA=
-    access-token-expiration: 900000 # 15 minutes
-    refresh-token-expiration: 604800000 # 7 days
-    access-cookie-name: my_access_token_cookie
-    refresh-cookie-name: my_refresh_token_cookie
+jwt:
+  secret: oXfoTNh5L3vrONyHrSFaL+WGWB/8S908Qf1TpakPvkA=
+  access-token-expiration: 900000 # 15 minutes
+  refresh-token-expiration: 604800000 # 7 days
+  access-cookie-name: my_access_token_cookie
+  refresh-cookie-name: my_refresh_token_cookie
 
-  logging:
-    level:
-      org.springframework.security: DEBUG
+logging:
+  level:
+    org.springframework.security: DEBUG
 

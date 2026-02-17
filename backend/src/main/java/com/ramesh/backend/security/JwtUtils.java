@@ -34,6 +34,8 @@ public class JwtUtils {
     private long refreshTokenExpirationMs;
 
     public String generateAccessToken(UserDetailsImpl userDetails){
+
+        Date now = new Date();
         Set<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
@@ -44,8 +46,8 @@ public class JwtUtils {
                 .claim("name", userDetails.getName())
                 .claim("roles", roles)
                 .claim("type", "access")
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + accessTokenExpirationMs))
+                .issuedAt(now)
+                .expiration(new Date(now.getTime() + accessTokenExpirationMs))
                 .signWith(getSigningKey())
                 .compact();
     }

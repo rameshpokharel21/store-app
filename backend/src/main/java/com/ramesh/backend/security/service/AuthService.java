@@ -29,5 +29,5 @@ public class AuthService {
     @Value("{jwt.refresh-token-expiration}")
     private long refreshTokenExpirationMs;
 
-    
+
 }

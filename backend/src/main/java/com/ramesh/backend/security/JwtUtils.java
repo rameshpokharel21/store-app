@@ -15,7 +15,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -93,7 +92,7 @@ public class JwtUtils {
         }catch(ExpiredJwtException e){
             logger.error("JWT token is expired: {}", e.getMessage());
         }catch(UnsupportedJwtException e){
-            logger.error("JWT token is unsupported: {}", e.getMessage())
+            logger.error("JWT token is unsupported: {}", e.getMessage());
         }catch(IllegalArgumentException e){
             logger.error("JWT claims string is empty: {}", e.getMessage());
         }

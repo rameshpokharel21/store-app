@@ -2,7 +2,7 @@ package com.ramesh.backend.security.config;
 
 import com.ramesh.backend.security.JwtAuthEntryPoint;
 import com.ramesh.backend.security.JwtAuthenticationFilter;
-import com.ramesh.backend.security.UserDetailsServiceImpl;
+import com.ramesh.backend.security.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

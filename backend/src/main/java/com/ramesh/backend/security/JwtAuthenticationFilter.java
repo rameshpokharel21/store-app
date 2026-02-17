@@ -1,5 +1,6 @@
 package com.ramesh.backend.security;
 
+import com.ramesh.backend.security.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

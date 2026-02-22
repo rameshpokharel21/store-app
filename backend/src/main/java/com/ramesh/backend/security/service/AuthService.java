@@ -44,10 +44,10 @@ public class AuthService {
     @Value("${jwt.refresh-cookie-name}")
     private String refreshCookieName;
 
-    @Value("{jwt.access-token-expiration}")
+    @Value("${jwt.access-token-expiration}")
     private long accessTokenExpirationMs;
 
-    @Value("{jwt.refresh-token-expiration}")
+    @Value("${jwt.refresh-token-expiration}")
     private long refreshTokenExpirationMs;
 
     public LoginResponse login(LoginRequest loginRequest, HttpServletResponse response){

@@ -1,4 +1,4 @@
-package com.ramesh.backend.security;
+package com.ramesh.backend.security.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ramesh.backend.entity.User;

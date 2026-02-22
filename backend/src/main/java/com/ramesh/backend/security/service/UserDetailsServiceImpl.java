@@ -2,7 +2,6 @@ package com.ramesh.backend.security.service;
 
 import com.ramesh.backend.entity.User;
 import com.ramesh.backend.repository.UserRepository;
-import com.ramesh.backend.security.UserDetailsImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

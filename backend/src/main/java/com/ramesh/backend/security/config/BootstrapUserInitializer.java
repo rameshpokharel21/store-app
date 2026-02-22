@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
+
 public class BootstrapUserInitializer implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(BootstrapUserInitializer.class);
@@ -23,7 +23,11 @@ public class BootstrapUserInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final BootstrapUserProperties properties;
 
-
+    public BootstrapUserInitializer(UserRepository userRepository, PasswordEncoder passwordEncoder, BootstrapUserProperties properties) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.properties = properties;
+    }
 
 
     @Override
@@ -34,7 +38,7 @@ public class BootstrapUserInitializer implements CommandLineRunner {
                 User user = new User();
                 user.setName(userProps.name());
                 user.setEmail(userProps.email());
-                user.setPassword(userProps.password());
+                user.setPassword(passwordEncoder.encode(userProps.password()));
                 Set<Role> roles = userProps.roles()
                         .stream()
                         .map(Role::valueOf)

@@ -1,8 +1,8 @@
-package com.ramesh.backend.security.config;
+package com.ramesh.backend.config;
 
+import com.ramesh.backend.security.service.UserDetailsServiceImpl;
 import com.ramesh.backend.security.utils.JwtAuthEntryPoint;
 import com.ramesh.backend.security.utils.JwtAuthenticationFilter;
-import com.ramesh.backend.security.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,12 +19,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true)//default
 public class SecurityConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
+
 
     public SecurityConfig(UserDetailsServiceImpl userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter, JwtAuthEntryPoint jwtAuthEntryPoint) {
         this.userDetailsService = userDetailsService;
@@ -55,25 +56,24 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .csrf(c -> c.disable())
-                .cors(cors -> {}) //Uses WebConfig CORS Setings
+                .cors(cors -> {}) //Uses WebConfig CORS settings
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(
-                                        "/api/auth/login",
-                                        "/api/auth/register",
-                                        "/api/auth/logout",
-                                        "/api/auth/refresh"
-                                ).permitAll()
+                .authorizeHttpRequests( auth -> auth
+                        .requestMatchers(
+                                "/api/auth/login",
+                                "/api/auth/register",
+                                "/api/auth/logout",
+                                "/api/auth/refresh"
+                        ).permitAll()
+                        .requestMatchers("/api/auth/**").authenticated()
 
-                                .requestMatchers("/api/auth/**").authenticated()
-
-                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/api/manager/**").hasAnyRole("MANAGER", "ADMIN")
-                                .requestMatchers("/api/user/**").hasAnyRole("STAFF", "MANAGER", "ADMIN")
-                                .requestMatchers("/api/dashboard/**").hasAnyRole("STAFF", "MANAGER", "ADMIN")
-                                .anyRequest().authenticated()
-                            )
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/manager/**").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers("/api/user/**").hasAnyRole("STAFF", "MANAGER", "ADMIN")
+                        .requestMatchers("/api/dashboard/**").hasAnyRole("STAFF", "MANAGER", "ADMIN")
+                        .anyRequest().authenticated()
+                )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

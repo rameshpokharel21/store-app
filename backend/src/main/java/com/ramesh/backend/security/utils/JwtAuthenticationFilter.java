@@ -1,4 +1,4 @@
-package com.ramesh.backend.security;
+package com.ramesh.backend.security.utils;
 
 import com.ramesh.backend.security.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;

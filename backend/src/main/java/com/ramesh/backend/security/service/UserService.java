@@ -6,7 +6,6 @@ import com.ramesh.backend.entity.User;
 import com.ramesh.backend.exception.ResourceNotFoundException;
 import com.ramesh.backend.exception.UnauthorizedException;
 import com.ramesh.backend.repository.UserRepository;
-import com.ramesh.backend.security.UserDetailsImpl;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

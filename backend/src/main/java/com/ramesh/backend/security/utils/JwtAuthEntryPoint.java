@@ -1,4 +1,4 @@
-package com.ramesh.backend.security;
+package com.ramesh.backend.security.utils;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,9 +17,13 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
             throws IOException, ServletException {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write(
-                "{\"error\": \"Unauthorized\", \"message\": \"" + authException.getMessage() + "\"}"
-        );
+        response.getWriter().write("""
+                        {
+                        "status": 401,
+                        "error": "Unauthorized",
+                        "message": "Invalid or missing authentication token"
+                        }
+                        """);
 
     }
 }

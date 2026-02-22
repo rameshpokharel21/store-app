@@ -44,13 +44,13 @@ app:
 
     - name: "Manager"
       email: "manager@example.com"
-      password: "manager@example.com"
+      password: "manager123"
       roles:
         - MANAGER
         - STAFF
 
-    - name: "user"
+    - name: "User"
       email: "user@example.com"
-      password: "staff123"
+      password: "user123"
       roles:
         - STAFF

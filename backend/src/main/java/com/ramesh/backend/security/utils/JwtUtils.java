@@ -1,5 +1,6 @@
-package com.ramesh.backend.security;
+package com.ramesh.backend.security.utils;
 
+import com.ramesh.backend.security.service.UserDetailsImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;

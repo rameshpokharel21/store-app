@@ -1,5 +1,6 @@
 package com.ramesh.backend.security.config;
 
+import com.ramesh.backend.security.utils.CustomAccessDeniedHandler;
 import com.ramesh.backend.security.utils.JwtAuthEntryPoint;
 import com.ramesh.backend.security.utils.JwtAuthenticationFilter;
 import com.ramesh.backend.security.service.UserDetailsServiceImpl;
@@ -25,11 +26,13 @@ public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter, JwtAuthEntryPoint jwtAuthEntryPoint) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter, JwtAuthEntryPoint jwtAuthEntryPoint, CustomAccessDeniedHandler accessDeniedHandler) {
         this.userDetailsService = userDetailsService;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.jwtAuthEntryPoint = jwtAuthEntryPoint;
+        this.accessDeniedHandler = accessDeniedHandler;
     }
 
     @Bean
@@ -56,7 +59,11 @@ public class SecurityConfig {
         http
                 .csrf(c -> c.disable())
                 .cors(cors -> {}) //Uses WebConfig CORS Setings
-                .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthEntryPoint))
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(jwtAuthEntryPoint) // 401 error handler
+                        .accessDeniedHandler(accessDeniedHandler) //403 error handler
+
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(

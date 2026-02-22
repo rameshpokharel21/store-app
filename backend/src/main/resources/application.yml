@@ -31,3 +31,26 @@ jwt:
 logging:
   level:
     org.springframework.security: DEBUG
+
+app:
+  bootstrap-users:
+    - name: "Admin"
+      email: "admin@example.com"
+      password: "admin123"
+      roles:
+        - ADMIN
+        - MANAGER
+        - STAFF
+
+    - name: "Manager"
+      email: "manager@example.com"
+      password: "manager@example.com"
+      roles:
+        - MANAGER
+        - STAFF
+
+    - name: "user"
+      email: "user@example.com"
+      password: "staff123"
+      roles:
+        - STAFF

@@ -14,7 +14,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "${cors.allowed-origins}", allowCredentials = "true")
+//@CrossOrigin(origins = "${cors.allowed-origins}", allowCredentials = "true")
 @PreAuthorize("hasAnyRole('STAFF', 'MANAGER', 'ADMIN')")
 public class UserController {
 

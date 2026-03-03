@@ -45,4 +45,9 @@ export const api = {
         return response.data;
     },
 
+    getDashboard: async () => {
+        const response = await axiosInstance.get("/api/dashboard");
+        return response.data;
+    }
+
 };

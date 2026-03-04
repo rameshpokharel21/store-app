@@ -2,7 +2,7 @@ import axios from "axios";
 import {notifyError} from "../utils/errorHandler";
 
 
-const API_BASE_URL = import.meta.enve.VITE_API_URL || "http://localhost:8081";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
 
 let refreshAttempts = 0;
 

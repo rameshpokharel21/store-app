@@ -76,27 +76,29 @@ const Dashboard = () => {
                 <h2 className="text-xl font-semibold text-gray-800 mb-4">
                     Your Information
                 </h2>
-                <div>
-                    <p className="text-xs text-gray-500">Name</p>
-                    <p className="text-sm font-medium text-gray-800">{user?.name}</p>
-                </div>
-                <div>
-                    <p className="text-xs text-gray-500">Email</p>
-                    <p className="text-sm font-medium text-gray-800">{user?.email}</p>
-                </div>
-                <div>
-                    <p className="text-xs text-gray-500">Roles</p>
-                    <div className="flex gap-2 mt-1">
-                        {user?.roles?.map((role) => (
-                            <span
-                            key={role}
-                            className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium"
-                            >
-                                {role}
-                            </span>
-                        ))}
+               <div className="flex justify-center gap-10">
+                    <div>
+                        <p className="text-xs text-gray-500">Name</p>
+                        <p className="text-sm font-medium text-gray-800">{user?.name}</p>
                     </div>
-                </div>
+                    <div>
+                        <p className="text-xs text-gray-500">Email</p>
+                        <p className="text-sm font-medium text-gray-800">{user?.email}</p>
+                    </div>
+                    <div>
+                        <p className="text-xs text-gray-500">Roles</p>
+                        <div className="flex gap-2 mt-1 justify-center">
+                            {user?.roles?.map((role) => (
+                                <span
+                                key={role}
+                                className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium"
+                                >
+                                    {role}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+               </div>
             </div>
         </main>
       

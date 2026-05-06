@@ -48,6 +48,32 @@ export const api = {
     getDashboard: async () => {
         const response = await axiosInstance.get("/api/dashboard");
         return response.data;
-    }
+    },
+
+    // Admin: user management
+    getUserById: async (id) => {
+        const response = await axiosInstance.get(`/api/admin/users/${id}`);
+        return response.data;
+    },
+
+    createUser: async (data) => {
+        const response = await axiosInstance.post("/api/admin/users", data);
+        return response.data;
+    },
+
+    deleteUser: async (id) => {
+        const response = await axiosInstance.delete(`/api/admin/users/${id}`);
+        return response.data;
+    },
+
+    updateUserRoles: async (id, roles) => {
+        const response = await axiosInstance.put(`/api/admin/users/${id}/roles`, { roles });
+        return response.data;
+    },
+
+    updateUserEnabled: async (id, enabled) => {
+        const response = await axiosInstance.put(`/api/admin/users/${id}/enabled`, { enabled });
+        return response.data;
+    },
 
 };

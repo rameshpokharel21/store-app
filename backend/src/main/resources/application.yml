@@ -6,9 +6,9 @@ spring:
     name: backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/storedb
-    username: testuser
-    password: Somepostgres
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -19,14 +19,17 @@ spring:
           format_sql: true
 
 cors:
-  allowed-origins: http://localhost:5173,http://localhost:3000
+  allowed-origins: ${ALLOWED-ORIGINS}
 
 jwt:
-  secret: oXfoTNh5L3vrONyHrSFaL+WGWB/8S908Qf1TpakPvkA=
+  secret: ${JWT_SECRET}
   access-token-expiration: 900000 #15 minutes
   refresh-token-expiration: 604800000 # 7 days
-  access-cookie-name: my_access_token_cookie
-  refresh-cookie-name: my_refresh_token_cookie
+  access-cookie-name: ${JWT_ACCESS_COOKIE_NAME}
+  refresh-cookie-name: ${JWT_REFRESH_COOKIE_NAME}
+
+cookie:
+  secure: ${COOKIE_SECURE:false}
 
 logging:
   level:
@@ -34,23 +37,17 @@ logging:
 
 app:
   bootstrap-users:
-    - name: "Admin"
-      email: "admin@example.com"
-      password: "admin123"
-      roles:
-        - ADMIN
-        - MANAGER
-        - STAFF
+    - name: ${ADMIN_NAME}
+      email: ${ADMIN_EMAIL}
+      password: ${ADMIN_PASSWORD}
+      roles: ${ADMIN_ROLES}
 
-    - name: "Manager"
-      email: "manager@example.com"
-      password: "manager123"
-      roles:
-        - MANAGER
-        - STAFF
+    - name: ${MANAGER_NAME}
+      email: ${MANAGER_EMAIL}
+      password: ${MANAGER_PASSWORD}
+      roles: ${MANAGER_ROLES}
 
-    - name: "User"
-      email: "user@example.com"
-      password: "user123"
-      roles:
-        - STAFF
+    - name: ${USER_NAME}
+      email: ${USER_EMAIL}
+      password: ${USER_PASSWORD}
+      roles: ${USER_ROLES}

@@ -40,6 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //only use ACCESS token for authentication
             String accessToken = jwtUtils.extractTokenFromCookie(request, accessCookieName);
             if(accessToken != null && jwtUtils.validateAccessToken(accessToken)){
+
                 String email = jwtUtils.getEmailFromJwtToken(accessToken);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken authentication =
@@ -53,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 logger.debug("Set Authentication for user: {}", email);
             }
         }catch (Exception e){
-            logger.error("Could not set user authenticatio: {}", e.getMessage());
+            logger.error("Could not set user authentication: {}", e.getMessage());
         }
 
 

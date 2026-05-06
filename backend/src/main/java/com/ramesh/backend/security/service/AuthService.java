@@ -13,6 +13,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,10 +30,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -49,7 +52,14 @@ public class AuthService {
     @Value("${jwt.refresh-token-expiration}")
     private long refreshTokenExpirationMs;
 
+    @Value("${cookie.secure:false}")
+    private boolean cookieSecure;
+
     public LoginResponse login(LoginRequest loginRequest, HttpServletResponse response){
+//        authenticationManager.authenticate() never returns null. It either:
+//        - Returns a fully populated Authentication object (success), or
+//        - Throws AuthenticationException (failure) catch it in
+//           @ControllerAdvice global exception handler.
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.email(),
@@ -58,9 +68,7 @@ public class AuthService {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        if(userDetails == null){
-            throw new UnauthorizedException("User not authenticated");
-        }
+
 
         String accessToken = jwtUtils.generateAccessToken(userDetails);
         String refreshToken = jwtUtils.generateRefreshToken(userDetails);
@@ -89,8 +97,8 @@ public class AuthService {
     //Logout -Clear both cookies
     public void logout(HttpServletResponse response){
         //set tokens to null and maxAge to 0
-        setCookieProperties(accessCookieName, null, 0, response);
-        setCookieProperties(refreshCookieName, null, 0, response);
+        setCookieProperties(accessCookieName, "", 0, response);
+        setCookieProperties(refreshCookieName, "", 0, response);
     }
 
 
@@ -117,7 +125,8 @@ public class AuthService {
                 savedUser.getName(),
                 savedUser.getEmail(),
                 roleNames,
-                savedUser.getCreatedAt().toString()
+                savedUser.getCreatedAt().toString(),
+                savedUser.isEnabled()
         );
     }
 
@@ -142,11 +151,16 @@ public class AuthService {
     }
 
     private void setCookieProperties(String cookieName, String token, long tokenExpiryMs, HttpServletResponse response){
+        int maxAge = (int)(tokenExpiryMs/1000);
         Cookie cookie = new Cookie(cookieName, token);
         cookie.setHttpOnly(true);
-        cookie.setSecure(false);
+        cookie.setSecure(cookieSecure);
         cookie.setPath("/");
-        cookie.setMaxAge((int)(tokenExpiryMs)/1000);
+        cookie.setMaxAge(maxAge);
+        cookie.setAttribute("SameSite", cookieSecure ? "None" : "Lax");
+        logger.debug("Setting cookie name={} maxAge={}s secure={} sameSite={}",
+                cookieName, maxAge, cookieSecure, cookieSecure ? "None" : "Lax");
+
         response.addCookie(cookie);
     }
 }

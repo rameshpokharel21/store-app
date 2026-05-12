@@ -34,7 +34,7 @@ public class Product {
     @Column(nullable = false)
     private String unit;  //kg, pcs, liters
 
-    private int recordLevel; //low stock threshold
+    private int reorderLevel; //low stock threshold
 
     private int currentQuantity; //total stock at hand
 

@@ -106,7 +106,7 @@ public class UserService {
         return toUserResponse(userRepository.save(user));
     }
 
-    private @NonNull User getUser() {
+    public @NonNull User getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new UnauthorizedException("User not authenticated");
@@ -119,7 +119,7 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
-    private UserResponse toUserResponse(User user) {
+    public UserResponse toUserResponse(User user) {
         Set<String> roles = user.getRoles().stream()
                 .map(Enum::name)
                 .collect(Collectors.toSet());
@@ -132,4 +132,6 @@ public class UserService {
                 user.isEnabled()
         );
     }
+
+
 }

@@ -32,6 +32,10 @@ public class InventoryAdjustment {
     @Column(nullable = false)
     private AdjustmentType changeType;
 
+    //positive=received, negative = sold/spoilded/damanged
+    @Column(nullable = false)
+    private int quantityChange;
+
     private String reason;
 
     @Column(name="created_at")

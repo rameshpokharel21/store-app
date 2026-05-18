@@ -1,6 +1,6 @@
 package com.ramesh.backend.dto.response;
 
 public record SupplierResponse(
-        String id, String name, String description, String createdAt
+        String id, String name, String contactInfo, String address, String createdAt
 ) {
 }

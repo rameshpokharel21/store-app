@@ -11,6 +11,7 @@ public record ProductRequest(
         String barcode,
         @NotBlank String unit,
         @Min(0) int reorderLevel,
-        BigDecimal avgCostPrice
+        BigDecimal avgCostPrice,
+        BigDecimal sellingPrice
 ) {
 }

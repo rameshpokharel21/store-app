@@ -1,4 +1,4 @@
-package com.ramesh.backend.security.service;
+package com.ramesh.backend.service;
 
 import com.ramesh.backend.dto.request.CategoryRequest;
 import com.ramesh.backend.dto.response.CategoryResponse;

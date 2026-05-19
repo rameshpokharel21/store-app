@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name="purchase_order_items")
 @Getter
@@ -29,4 +31,7 @@ public class PurchaseOrderItem {
     private int orderedQuantity;
 
     private int receivedQuantity; //can be updated for partially received
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal unitPrice; // price per unit agreed at order time
 }

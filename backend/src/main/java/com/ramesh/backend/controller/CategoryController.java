@@ -2,7 +2,7 @@ package com.ramesh.backend.controller;
 
 import com.ramesh.backend.dto.request.CategoryRequest;
 import com.ramesh.backend.dto.response.CategoryResponse;
-import com.ramesh.backend.security.service.CategoryService;
+import com.ramesh.backend.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +28,7 @@ public class CategoryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     public ResponseEntity<CategoryResponse> create(@Valid @RequestBody CategoryRequest request){
         CategoryResponse response = categoryService.createCategory(request);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -35,6 +36,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable String id){
         categoryService.deleteCategory(id);
         return ResponseEntity.noContent().build();

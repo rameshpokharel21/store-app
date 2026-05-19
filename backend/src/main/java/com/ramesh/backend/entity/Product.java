@@ -39,7 +39,10 @@ public class Product {
     private int currentQuantity; //total stock at hand
 
     @Column(precision = 10, scale = 2)
-    private BigDecimal avgCostPrice; //for profit reporting
+    private BigDecimal avgCostPrice; // weighted average of purchase unit prices; updated on each receipt
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal sellingPrice; // price charged to customers; used for revenue calculations
 
     @Column(name="created_at")
     private LocalDateTime createdAt;

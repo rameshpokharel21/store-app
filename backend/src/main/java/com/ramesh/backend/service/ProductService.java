@@ -1,4 +1,4 @@
-package com.ramesh.backend.security.service;
+package com.ramesh.backend.service;
 
 import com.ramesh.backend.dto.request.ProductRequest;
 import com.ramesh.backend.dto.response.CategoryResponse;
@@ -41,6 +41,7 @@ public class ProductService {
         product.setUnit(request.unit());
         product.setReorderLevel(request.reorderLevel());
         product.setAvgCostPrice(request.avgCostPrice());
+        product.setSellingPrice(request.sellingPrice());
         //currentQuantity defaults to 0
         return toResponse(productRepository.save(product));
     }
@@ -90,6 +91,7 @@ public class ProductService {
         product.setUnit(request.unit());
         product.setReorderLevel(request.reorderLevel());
         product.setAvgCostPrice(request.avgCostPrice());
+        product.setSellingPrice(request.sellingPrice());
         //currentQuantity is not updated via product update
         // - stock changes by inventory service
         Product updated = productRepository.save(product);
@@ -128,6 +130,7 @@ public class ProductService {
                 product.getReorderLevel(),
                 product.getCurrentQuantity(),
                 product.getAvgCostPrice(),
+                product.getSellingPrice(),
                 product.getCreatedAt().toString()
         );
     }

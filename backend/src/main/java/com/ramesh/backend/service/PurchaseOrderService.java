@@ -1,4 +1,4 @@
-package com.ramesh.backend.security.service;
+package com.ramesh.backend.service;
 
 import com.ramesh.backend.dto.request.PurchaseOrderItemRequest;
 import com.ramesh.backend.dto.request.PurchaseOrderRequest;
@@ -10,10 +10,14 @@ import com.ramesh.backend.exception.UnauthorizedException;
 import com.ramesh.backend.repository.ProductRepository;
 import com.ramesh.backend.repository.PurchaseOrderRepository;
 import com.ramesh.backend.repository.SupplierRepository;
+import com.ramesh.backend.security.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +57,7 @@ public class PurchaseOrderService {
             item.setPurchaseOrder(savedPo);
             item.setProduct(product);
             item.setOrderedQuantity(itemRequest.orderedQuantity());
+            item.setUnitPrice(itemRequest.unitPrice());
             item.setReceivedQuantity(0);
             items.add(item);
         }
@@ -62,22 +67,27 @@ public class PurchaseOrderService {
     return toResponse(savedPo);
     }
 
-    public PurchaseOrderResponse receiveShipment(String poId, ReceiveShipmentRequest request){
+    public PurchaseOrderResponse receiveShipment(String poId, ReceiveShipmentRequest request, User currentUser){
         PurchaseOrder po = purchaseOrderRepository.findById(poId)
                 .orElseThrow(() -> new ResourceNotFoundException("Purchase order not found."));
         if(po.getStatus() == PurchaseOrderStatus.RECEIVED || po.getStatus() == PurchaseOrderStatus.CANCELLED){
             throw new IllegalArgumentException("Purchase order already completed or cancelled");
         }
 
-        User currentUser = userService.getUser();
         Map<String, Integer> receivedItems = request.receivedItems().stream()
                 .collect(Collectors.toMap(ReceiveShipmentRequest.ReceivedItem::productId, ReceiveShipmentRequest.ReceivedItem::receivedQuantity));
         for (PurchaseOrderItem item : po.getItems()){
             Integer receivedQuantity = receivedItems.get(item.getProduct().getId());
             if(receivedQuantity != null && receivedQuantity > 0){
-                item.setReceivedQuantity(item.getReceivedQuantity() + receivedQuantity);
-                //update inventory
-                inventoryService.receiveProductViaPurchaseOrder(item.getProduct(), receivedQuantity, currentUser, po.getId());
+                int newTotalReceived = item.getReceivedQuantity() + receivedQuantity;
+                if(newTotalReceived > item.getOrderedQuantity()){
+                    throw new IllegalArgumentException(
+                            "Received quantity (" + newTotalReceived + ") exceeds ordered quantity (" +
+                            item.getOrderedQuantity() + ") for product: " + item.getProduct().getName());
+                }
+                item.setReceivedQuantity(newTotalReceived);
+                //update inventory and recalculate avg cost
+                inventoryService.receiveProductViaPurchaseOrder(item.getProduct(), receivedQuantity, item.getUnitPrice(), currentUser, po.getId());
             }
         }
 
@@ -95,6 +105,17 @@ public class PurchaseOrderService {
         po = purchaseOrderRepository.save(po);
         return toResponse(po);
 
+    }
+
+
+    public Page<PurchaseOrderResponse> getAllPurchaseOrders(PurchaseOrderStatus status, Pageable pageable){
+            Page<PurchaseOrder> poPage;
+            if(status != null){
+                poPage = purchaseOrderRepository.findByStatus(status, pageable);
+            }else{
+                poPage = purchaseOrderRepository.findAll(pageable);
+            }
+            return poPage.map(this::toResponse);
     }
 
     private PurchaseOrderResponse toResponse(PurchaseOrder po){
@@ -127,11 +148,15 @@ public class PurchaseOrderService {
     }
 
     private PurchaseOrderItemResponse toItemResponse(PurchaseOrderItem item){
+        BigDecimal lineTotal = item.getUnitPrice()
+                .multiply(BigDecimal.valueOf(item.getOrderedQuantity()));
         return new PurchaseOrderItemResponse(
                 item.getProduct().getId(),
                 item.getProduct().getName(),
                 item.getOrderedQuantity(),
-                item.getReceivedQuantity()
+                item.getReceivedQuantity(),
+                item.getUnitPrice(),
+                lineTotal
         );
     }
 }

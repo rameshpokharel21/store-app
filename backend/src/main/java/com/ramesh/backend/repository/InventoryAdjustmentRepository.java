@@ -2,6 +2,9 @@ package com.ramesh.backend.repository;
 
 import com.ramesh.backend.entity.AdjustmentType;
 import com.ramesh.backend.entity.InventoryAdjustment;
+import com.ramesh.backend.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,9 +16,18 @@ public interface InventoryAdjustmentRepository extends JpaRepository<InventoryAd
 
     List<InventoryAdjustment> findByProductIdOrderByCreatedAtDesc(String productId);
     List<InventoryAdjustment> findByChangeType(AdjustmentType type);
+    Page<InventoryAdjustment> findByChangeType(AdjustmentType type, Pageable pageable);
 
-//    @Query("SELECT a FROM InventoryAdjustment a WHERE a.createdAt BETWEEN :start AND :end")
-//    List<InventoryAdjustment> findByDateRange(@Param("start")LocalDateTime start, @Param("end")LocalDateTime end);
+    @Query("SELECT a FROM InventoryAdjustment a WHERE a.createdAt BETWEEN :start AND :end")
+    List<InventoryAdjustment> findByDateRange(@Param("start")LocalDateTime start, @Param("end")LocalDateTime end);
 
     List<InventoryAdjustment> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
+    List<InventoryAdjustment> findByProductAndChangeType(Product product, AdjustmentType adjustmentType);
+
+    List<InventoryAdjustment> findByProductOrderByCreatedAtDesc(Product product);
+
+    List<InventoryAdjustment> findAllByOrderByCreatedAtDesc();
+
+    Page<InventoryAdjustment> findByProductId(String productId, Pageable pageable);
 }

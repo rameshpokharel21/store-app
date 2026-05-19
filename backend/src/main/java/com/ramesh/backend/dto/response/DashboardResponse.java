@@ -1,4 +1,10 @@
 package com.ramesh.backend.dto.response;
 
-public record DashboardResponse(int totalUsers, int activeProjects, int pendingTasks) {
+public record DashboardResponse(
+        long totalUsers,
+        long totalProducts,
+        long lowStockCount,
+        long pendingOrders,
+        long pendingTasks
+) {
 }

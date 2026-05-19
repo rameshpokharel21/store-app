@@ -1,4 +1,4 @@
-package com.ramesh.backend.security.service;
+package com.ramesh.backend.service;
 
 import com.ramesh.backend.dto.request.TaskRequest;
 import com.ramesh.backend.dto.response.TaskResponse;
@@ -11,6 +11,7 @@ import com.ramesh.backend.exception.ResourceNotFoundException;
 import com.ramesh.backend.exception.UnauthorizedException;
 import com.ramesh.backend.repository.TaskRepository;
 import com.ramesh.backend.repository.UserRepository;
+import com.ramesh.backend.security.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

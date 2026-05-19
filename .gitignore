@@ -79,3 +79,6 @@ gradle-app.setting
 *.swo
 
 updatedCookie.md
+auth_reference.md
+SESSION_SUMMARY.md
+frontend_details.md

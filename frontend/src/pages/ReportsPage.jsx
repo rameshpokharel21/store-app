@@ -28,8 +28,8 @@ const LowStockSection = () => {
                     {data?.length === 0 ? (
                         <tr><td colSpan={3} className="px-4 py-8 text-center text-gray-400">All products are sufficiently stocked.</td></tr>
                     ) : data?.map(p => (
-                        <tr key={p.id} className="border-b border-gray-50 bg-amber-50">
-                            <td className="px-4 py-3 font-medium text-gray-800">{p.name}</td>
+                        <tr key={p.productId} className="border-b border-gray-50 bg-amber-50">
+                            <td className="px-4 py-3 font-medium text-gray-800">{p.productName}</td>
                             <td className="px-4 py-3 text-right font-semibold text-amber-600">{p.currentQuantity}</td>
                             <td className="px-4 py-3 text-right text-gray-600">{p.reorderLevel}</td>
                         </tr>

@@ -92,7 +92,12 @@ const InventoryPage = () => {
     const productName = (id) => products?.find(p => p.id === id)?.name || id;
 
     const handleCreate = async (form) => {
-        await createMutation.mutateAsync(form);
+        await createMutation.mutateAsync({
+            productId: form.productId,
+            type: form.type,
+            quantity: Number(form.quantityChange),
+            reason: form.reason,
+        });
         setShowCreate(false);
     };
 

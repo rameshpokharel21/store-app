@@ -164,11 +164,11 @@ const ReceiveModal = ({ order, products, onSave, onClose, isPending, error }) =>
     );
 
     const handleSubmit = () => {
-        const items = Object.entries(quantities)
+        const receivedItems = Object.entries(quantities)
             .filter(([, qty]) => qty > 0)
             .map(([productId, receivedQuantity]) => ({ productId, receivedQuantity: Number(receivedQuantity) }));
-        if (items.length === 0) return;
-        onSave({ items });
+        if (receivedItems.length === 0) return;
+        onSave({ receivedItems });
     };
 
     return (
@@ -274,9 +274,9 @@ const PurchaseOrdersPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {orders?.length === 0 ? (
+                                {orders?.content?.length === 0 ? (
                                     <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400">No purchase orders found.</td></tr>
-                                ) : orders?.map(o => (
+                                ) : orders?.content?.map(o => (
                                     <tr key={o.id} className="border-b border-gray-50 hover:bg-gray-50 transition">
                                         <td className="px-4 py-3 font-mono text-xs text-gray-500">{o.id?.slice(0, 8)}…</td>
                                         <td className="px-4 py-3 font-medium text-gray-800">{supplierName(o.supplierId)}</td>
